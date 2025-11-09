@@ -1,0 +1,55 @@
+{
+  "name": "s3-to-postgres-ingestion",
+  "description": "Ingest JSON files from S3 into PostgreSQL",
+  "mode": "BATCH",
+  "source": {
+    "type": "s3-source",
+    "connection": {
+      "bucket": "my-data-bucket",
+      "prefix": "incoming/",
+      "region": "us-east-1",
+      "accessKey": "AWS_ACCESS_KEY",
+      "secretKey": "AWS_SECRET_KEY",
+      "format": "json"
+    },
+    "readMode": "FULL"
+  },
+  "destination": {
+    "type": "postgresql-destination",
+    "connection": {
+      "host": "postgres.example.com",
+      "port": 5432,
+      "database": "analytics",
+      "username": "analytics_user",
+      "password": "analytics_pass",
+      "table": "events"
+    },
+    "writeMode": "APPEND",
+    "batchSize": 5000,
+    "transactional": true
+  },
+  "transformations": [
+    {
+      "type": "FILTER",
+      "name": "filter-valid-records",
+      "config": {
+        "condition": "status == 'active'"
+      },
+      "order": 1
+    },
+    {
+      "type": "MAP",
+      "name": "rename-fields",
+      "config": {
+        "mappings": {
+          "user_id": "userId",
+          "created_at": "createdAt"
+        }
+      },
+      "order": 2
+    }
+  ],
+  "schedule": "0 2 * * *",
+  "owner": "data-team@example.com",
+  "tags": ["ingestion", "s3", "postgres"]
+}

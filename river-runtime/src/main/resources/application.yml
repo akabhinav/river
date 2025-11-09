@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: river-platform
+
+server:
+  port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  level:
+    com.river: INFO
+    root: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# River Platform Configuration
+river:
+  mode: standalone  # standalone, distributed
+  connectors:
+    scan-packages:
+      - com.river.connector.source
+      - com.river.connector.dest

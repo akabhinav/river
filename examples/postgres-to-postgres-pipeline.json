@@ -1,0 +1,41 @@
+{
+  "name": "postgres-to-postgres-replication",
+  "description": "Replicate data from source PostgreSQL to destination PostgreSQL",
+  "mode": "BATCH",
+  "source": {
+    "type": "postgresql-source",
+    "connection": {
+      "host": "source-postgres.example.com",
+      "port": 5432,
+      "database": "source_db",
+      "username": "source_user",
+      "password": "source_pass",
+      "table": "users"
+    },
+    "readMode": "INCREMENTAL",
+    "incrementalColumn": "updated_at",
+    "parallelism": 4
+  },
+  "destination": {
+    "type": "postgresql-destination",
+    "connection": {
+      "host": "dest-postgres.example.com",
+      "port": 5432,
+      "database": "dest_db",
+      "username": "dest_user",
+      "password": "dest_pass",
+      "table": "users"
+    },
+    "writeMode": "UPSERT",
+    "upsertKeys": ["id"],
+    "batchSize": 1000,
+    "transactional": true
+  },
+  "schedule": "0 */6 * * *",
+  "config": {
+    "maxRetries": 3,
+    "retryDelay": 60
+  },
+  "owner": "data-team@example.com",
+  "tags": ["replication", "postgres", "users"]
+}
