@@ -63,14 +63,6 @@
         <module>river-connectors-api</module>
         <module>river-connectors-source</module>
         <module>river-connectors-dest</module>
-        <module>river-transform</module>
-        <module>river-schema</module>
-        <module>river-metadata</module>
-        <module>river-security</module>
-        <module>river-monitoring</module>
-        <module>river-config</module>
-        <module>river-processing-batch</module>
-        <module>river-processing-stream</module>
         <module>river-api</module>
         <module>river-runtime</module>
     </modules>
