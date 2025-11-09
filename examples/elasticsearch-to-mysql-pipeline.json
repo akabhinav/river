@@ -1,0 +1,34 @@
+{
+  "name": "elasticsearch-to-mysql-reporting",
+  "description": "Export search results to MySQL for reporting",
+  "mode": "BATCH",
+  "source": {
+    "type": "elasticsearch-source",
+    "connection": {
+      "host": "elasticsearch",
+      "port": 9200,
+      "index": "logs-*",
+      "query": "{\"query\":{\"range\":{\"@timestamp\":{\"gte\":\"now-1d/d\",\"lt\":\"now/d\"}}}}",
+      "scrollSize": 1000,
+      "scrollTimeout": "5m"
+    },
+    "readMode": "FULL"
+  },
+  "destination": {
+    "type": "mysql-destination",
+    "connection": {
+      "host": "mysql",
+      "port": 3306,
+      "database": "river_test",
+      "username": "river",
+      "password": "river_pass",
+      "table": "log_summary"
+    },
+    "writeMode": "APPEND",
+    "batchSize": 500,
+    "transactional": true
+  },
+  "schedule": "0 1 * * *",
+  "owner": "data-team@example.com",
+  "tags": ["elasticsearch", "mysql", "reporting"]
+}

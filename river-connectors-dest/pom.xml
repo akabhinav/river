@@ -11,9 +11,9 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>river-connectors-source</artifactId>
-    <name>River Source Connectors</name>
-    <description>Source connector implementations</description>
+    <artifactId>river-connectors-dest</artifactId>
+    <name>River Destination Connectors</name>
+    <description>Destination connector implementations</description>
 
     <dependencies>
         <!-- River Core -->

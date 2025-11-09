@@ -1,0 +1,28 @@
+{
+  "name": "kafka-to-mongodb-events",
+  "description": "Store Kafka events in MongoDB for analysis",
+  "mode": "STREAMING",
+  "source": {
+    "type": "kafka-source",
+    "connection": {
+      "bootstrapServers": "kafka:29092",
+      "topic": "user-events",
+      "groupId": "river-mongodb-consumer",
+      "autoOffsetReset": "earliest",
+      "pollTimeout": 1000
+    },
+    "readMode": "STREAMING"
+  },
+  "destination": {
+    "type": "mongodb-destination",
+    "connection": {
+      "uri": "mongodb://river:river_pass@mongodb:27017",
+      "database": "river_test",
+      "collection": "events"
+    },
+    "writeMode": "APPEND",
+    "batchSize": 100
+  },
+  "owner": "data-team@example.com",
+  "tags": ["kafka", "mongodb", "events", "realtime"]
+}

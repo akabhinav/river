@@ -1,0 +1,29 @@
+{
+  "name": "mysql-to-kafka-cdc",
+  "description": "Stream MySQL changes to Kafka for event-driven architecture",
+  "mode": "STREAMING",
+  "source": {
+    "type": "mysql-source",
+    "connection": {
+      "host": "mysql",
+      "port": 3306,
+      "database": "river_test",
+      "username": "river",
+      "password": "river_pass",
+      "table": "orders"
+    },
+    "readMode": "CDC"
+  },
+  "destination": {
+    "type": "kafka-destination",
+    "connection": {
+      "bootstrapServers": "kafka:29092",
+      "topic": "mysql.river_test.orders",
+      "keyField": "id",
+      "valueField": "data"
+    },
+    "writeMode": "APPEND"
+  },
+  "owner": "data-team@example.com",
+  "tags": ["mysql", "kafka", "cdc", "realtime"]
+}

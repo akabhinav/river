@@ -1,0 +1,29 @@
+{
+  "name": "mongodb-to-elasticsearch",
+  "description": "Sync MongoDB documents to Elasticsearch for full-text search",
+  "mode": "BATCH",
+  "source": {
+    "type": "mongodb-source",
+    "connection": {
+      "uri": "mongodb://river:river_pass@mongodb:27017",
+      "database": "river_test",
+      "collection": "users",
+      "batchSize": 1000
+    },
+    "readMode": "FULL"
+  },
+  "destination": {
+    "type": "elasticsearch-destination",
+    "connection": {
+      "host": "elasticsearch",
+      "port": 9200,
+      "index": "users",
+      "idField": "_id"
+    },
+    "writeMode": "APPEND",
+    "batchSize": 500
+  },
+  "schedule": "0 */2 * * *",
+  "owner": "data-team@example.com",
+  "tags": ["mongodb", "elasticsearch", "search"]
+}

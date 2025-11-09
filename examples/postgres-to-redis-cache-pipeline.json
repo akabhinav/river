@@ -1,0 +1,33 @@
+{
+  "name": "postgres-to-redis-cache",
+  "description": "Cache frequently accessed PostgreSQL data in Redis",
+  "mode": "BATCH",
+  "source": {
+    "type": "postgresql-source",
+    "connection": {
+      "host": "postgres",
+      "port": 5432,
+      "database": "river_metadata",
+      "username": "river",
+      "password": "river_pass",
+      "query": "SELECT id, name, email FROM users WHERE active = true"
+    },
+    "readMode": "FULL"
+  },
+  "destination": {
+    "type": "redis-destination",
+    "connection": {
+      "host": "redis",
+      "port": 6379,
+      "database": 0,
+      "keyField": "id",
+      "valueField": "email",
+      "ttl": 3600
+    },
+    "writeMode": "APPEND",
+    "batchSize": 100
+  },
+  "schedule": "*/15 * * * *",
+  "owner": "data-team@example.com",
+  "tags": ["postgres", "redis", "caching"]
+}
