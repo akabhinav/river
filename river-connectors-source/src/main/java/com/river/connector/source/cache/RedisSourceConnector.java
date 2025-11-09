@@ -186,7 +186,13 @@ public class RedisSourceConnector implements SourceConnector<RedisSourceConfig> 
                 data.put("value", String.join(",", jedis.smembers(key)));
                 break;
             case "zset":
-                data.put("value", jedis.zrange(key, 0, -1).toString());
+                // Get sorted set with scores as a Map
+                var zsetWithScores = jedis.zrangeWithScores(key, 0, -1);
+                Map<String, Double> zsetMap = new HashMap<>();
+                for (var tuple : zsetWithScores) {
+                    zsetMap.put(tuple.getElement(), tuple.getScore());
+                }
+                data.put("value", zsetMap.toString());
                 break;
             case "hash":
                 data.put("value", jedis.hgetAll(key).toString());
